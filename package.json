@@ -45,7 +45,11 @@
     "recharts": "^2.15.1",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "genkit": "^0.6.1",
+    "@genkit-ai/core": "^0.6.1",
+    "@genkit-ai/flow": "^0.6.1",
+    "@genkit-ai/googleai": "^0.6.1"
   },
   "devDependencies": {
     "@types/node": "^20",
