@@ -1,26 +1,45 @@
-'use client'; // Necesario para usar hooks como useSearchParams
+'use client'; 
 
+import React, { Suspense } from 'react';
 import Script from 'next/script';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useSearchParams } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
-// La metadata para esta página se puede manejar en el layout si se necesita,
-// ya que la exportación estática no es compatible con 'use client'.
-
-export default function SchedulePage() {
+function SchedulerIframe() {
   const searchParams = useSearchParams();
   const acuityOwnerID = '33624155';
-  // Leer el parámetro 'appointmentType' de la URL, que es lo que envía AcuityScheduler.tsx
   const appointmentType = searchParams.get('appointmentType');
 
-  // Construir la URL base del iframe
   let iframeSrc = `https://app.acuityscheduling.com/schedule.php?owner=${acuityOwnerID}&ref=embedded_csp`;
 
-  // Si el parámetro existe, añadirlo a la URL del iframe para preseleccionar el servicio
   if (appointmentType) {
     iframeSrc += `&appointmentType=${appointmentType}`;
   }
 
+  return (
+    <div className="aspect-w-16 aspect-h-9 md:aspect-none" style={{ minHeight: '800px' }}>
+      <iframe 
+        src={iframeSrc} 
+        title="Schedule Appointment" 
+        width="100%" 
+        height="800"
+        frameBorder="0"
+        loading="lazy"
+      ></iframe>
+    </div>
+  );
+}
+
+function SchedulerFallback() {
+  return (
+    <div className="flex justify-center items-center" style={{ minHeight: '800px' }}>
+      <Loader2 className="h-16 w-16 animate-spin text-primary" />
+    </div>
+  );
+}
+
+export default function SchedulePage() {
   return (
     <div className="py-8 md:py-12 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,16 +51,9 @@ export default function SchedulePage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0 md:p-2">
-            <div className="aspect-w-16 aspect-h-9 md:aspect-none" style={{ minHeight: '800px' }}>
-              <iframe 
-                src={iframeSrc} 
-                title="Schedule Appointment" 
-                width="100%" 
-                height="800"
-                frameBorder="0"
-                loading="lazy"
-              ></iframe>
-            </div>
+            <Suspense fallback={<SchedulerFallback />}>
+              <SchedulerIframe />
+            </Suspense>
           </CardContent>
         </Card>
       </div>
@@ -53,3 +65,4 @@ export default function SchedulePage() {
     </div>
   );
 }
+
