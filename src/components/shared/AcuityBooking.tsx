@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -92,9 +91,13 @@ export default function AcuityScheduler() {
         setAvailableTimes([]); // Reset times
         setSelectedTime(null); // Reset time
         try {
+          if (!selectedAppointmentType) {
+            setAvailableDates([]); // Limpia las fechas si no hay un tipo de cita seleccionado
+            return; // Sale de la función si no hay un tipo de cita seleccionado
+          }
           const monthStr = format(currentCalendarMonth, 'yyyy-MM');
           const dates = await getAcuityAvailableDates({
-            appointmentTypeIDs: [selectedAppointmentType.id], // Corregido: usar appointmentTypeIDs (plural) y enviar como array
+            appointmentTypeIDs: [selectedAppointmentType.id], // Ahora es seguro acceder a .id
             month: monthStr,
           });
           setAvailableDates(dates);
