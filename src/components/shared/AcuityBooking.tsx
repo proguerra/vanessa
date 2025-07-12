@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -93,7 +94,7 @@ export default function AcuityScheduler() {
         try {
           const monthStr = format(currentCalendarMonth, 'yyyy-MM');
           const dates = await getAcuityAvailableDates({
-            appointmentTypeID: selectedAppointmentType.id,
+            appointmentTypeIDs: [selectedAppointmentType.id], // Corregido: usar appointmentTypeIDs (plural) y enviar como array
             month: monthStr,
           });
           setAvailableDates(dates);
