@@ -22,22 +22,15 @@ export default function FeaturedServicesSection() {
         setIsLoading(true);
         const allServices = (await getAcuityAppointmentTypes()).filter(s => !s.private);
         
-        const featured: AcuityAppointmentType[] = [];
-        
-        // Prioritize "Brazilian Wax"
-        const brazilianWax = allServices.find(s => s.name.toLowerCase().includes('brazilian wax'));
-        if (brazilianWax) {
-          featured.push(brazilianWax);
-        }
-        
-        // Add other services, avoiding duplicates
-        const otherServices = allServices.filter(s => s.id !== brazilianWax?.id);
-        
-        // Fill up to 3 slots
-        const remainingSlots = 3 - featured.length;
-        if (remainingSlots > 0) {
-          featured.push(...otherServices.slice(0, remainingSlots));
-        }
+        const popularServiceNames = [
+          "Woman’s Brazilian (includes butt strip)",
+          "Full Legs",
+          "Eyebrows"
+        ];
+
+        const featured = popularServiceNames.map(name => {
+          return allServices.find(s => s.name.trim().toLowerCase() === name.trim().toLowerCase());
+        }).filter((service): service is AcuityAppointmentType => service !== undefined); // Filter out any services that weren't found
         
         setFeaturedServices(featured);
 
