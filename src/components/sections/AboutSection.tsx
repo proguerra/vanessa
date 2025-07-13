@@ -33,7 +33,7 @@ export default function AboutSection() {
             <div className="flex items-center text-accent mb-6">
               <MapPin className="mr-2 h-5 w-5 flex-shrink-0" />
               <a 
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("15315 Southwest Fwy ste. 192, Sugar Land, TX 77478")}`}
+                href="https://www.google.com/maps/place/Viva+La+Beauty/@29.6033214,-95.6124699,17z/data=!3m1!4b1!4m6!3m5!1s0x8640e7d41c47ab2b:0x38fa7a13e4169f70!8m2!3d29.6033214!4d-95.6124699!16s%2Fg%2F11wmh17z1g?sa=X&ved=1t:2428&ictx=111&entry=tts&g_ep=EgoyMDI0MTIxMS4wIPu8ASoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold hover:underline"
