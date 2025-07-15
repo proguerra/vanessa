@@ -12,7 +12,7 @@ export default function AboutSection() {
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2 relative aspect-square rounded-lg overflow-hidden shadow-2xl">
             <Image 
-              src="https://static.wixstatic.com/media/c5947c_76dc43206651421fae1dee0ed1b30a5b~mv2.jpg" 
+              src="https://placehold.co/600x600.png" 
               alt="Viva La Beauty Salon Interior" 
               layout="fill" 
               objectFit="cover"
@@ -28,7 +28,7 @@ export default function AboutSection() {
               At Viva La Beauty, we are passionate about making you look and feel your absolute best. Nestled in the vibrant community of Sugar Land, Texas, our salon offers a serene and welcoming atmosphere where you can unwind and indulge in top-tier beauty and waxing services.
             </p>
             <p className="text-lg text-foreground mb-6 font-body">
-              Our experienced estheticians are dedicated to providing personalized care, using only the highest quality products and a gentle touch. Whether you're seeking a flawless Brazilian wax, perfectly sculpted eyebrows, or a rejuvenating facial, we're here to exceed your expectations.
+              Viva La Beauty offers a uniquely intimate and welcoming environment tailored to your comfort and confidence. With over 10 years of expertise, I specialize in delivering smooth, flawless results. Make the smart choice and choose the best waxing place for your needs. We're not just another waxing studio; we're the destination for those who appreciate the the most efficient service. Whether you're new to waxing or a regular, you'll leave feeling refreshed and empowered. Schedule your appointment today and discover why my clients trust Viva La Beauty for exceptional waxing services. — Vanessa
             </p>
             <div className="flex items-center text-accent mb-6">
               <MapPin className="mr-2 h-5 w-5 flex-shrink-0" />
@@ -44,7 +44,7 @@ export default function AboutSection() {
             <Button size="lg" asChild>
               <Link href="/book">
                 <Image src={iconUrl} alt="" width={20} height={20} className="mr-2 h-5 w-5" />
-                Book Your Transformation
+                Book Your Services
               </Link>
             </Button>
           </div>
