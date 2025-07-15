@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Importar useRouter
 import ServiceCard from '@/components/shared/ServiceCard';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -14,6 +15,7 @@ export default function FeaturedServicesSection() {
   const [featuredServices, setFeaturedServices] = useState<AcuityAppointmentType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const router = useRouter(); // Inicializar router
   const iconUrl = "https://static.wixstatic.com/media/c5947c_105b98aad40c4d4c8ca7de374634e9fa~mv2.png";
 
   useEffect(() => {
@@ -69,9 +71,12 @@ export default function FeaturedServicesSection() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredServices.map((service) => (
-              <Link key={service.id} href={`/book?serviceIds=${service.id}`}>
-                <ServiceCard service={service} onSelect={() => {}} isSelected={false} />
-              </Link>
+              <ServiceCard 
+                key={service.id} 
+                service={service}
+                onSelect={() => router.push(`/schedule?appointmentType=${service.id}`)}
+                isSelected={false} // isSelected ya no es relevante aquí
+              />
             ))}
           </div>
         )}
