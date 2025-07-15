@@ -12,7 +12,7 @@ export default function AboutSection() {
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2 relative aspect-square rounded-lg overflow-hidden shadow-2xl">
             <Image 
-              src="https://placehold.co/600x600.png" 
+              src="https://static.wixstatic.com/media/c5947c_76dc43206651421fae1dee0ed1b30a5b~mv2.jpg" 
               alt="Viva La Beauty Salon Interior" 
               layout="fill" 
               objectFit="cover"
