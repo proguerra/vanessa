@@ -24,13 +24,13 @@ export default function ServicesPage() {
         const categories: Record<string, string[]> = {
             'Face': ['nose', 'lip', 'chin', 'brow', 'eyebrow', 'face', 'sideburn', 'ear', 'facial'],
             'Mid Body': ['back', 'chest', 'stomach', 'underarm', 'arm'],
-            'Low Body': ['brazilian', 'bikini', 'leg', 'butt'],
+            'Lower Body': ['brazilian', 'bikini', 'leg', 'butt'], // Cambiado de "Low Body"
         };
 
         const grouped: Record<string, AcuityAppointmentType[]> = {
             'Face': [],
             'Mid Body': [],
-            'Low Body': [],
+            'Lower Body': [], // Cambiado de "Low Body"
             'Other Services': [],
         };
         
@@ -72,12 +72,12 @@ export default function ServicesPage() {
   }, [toast]);
   
   const handleServiceSelect = (service: AcuityAppointmentType) => {
-    // Redirige directamente a la página de reserva con el ID del servicio seleccionado
+    // Redirige directamente a la página del iframe con el ID del servicio seleccionado
     toast({
         title: "Starting Booking...",
         description: `You are booking for ${service.name}.`,
     });
-    router.push(`/book?serviceIds=${service.id}`);
+    router.push(`/schedule?appointmentType=${service.id}`);
   };
 
   const hasServices = Object.keys(categorizedServices).length > 0 && Object.values(categorizedServices).some(s => s.length > 0);
