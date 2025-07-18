@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
@@ -26,18 +26,17 @@ const ServiceArea = ({ position, label, onClick }: { position: string, label: st
 
 export default function AcuityScheduler() {
   const { toast } = useToast();
-  const searchParams = useSearchParams();
   const router = useRouter(); 
-  const serviceIdsParam = searchParams.get('serviceIds');
 
   const [allAppointmentTypes, setAllAppointmentTypes] = useState<AcuityAppointmentType[]>([]);
   const [cart, setCart] = useState<AcuityAppointmentType[]>([]);
   
   const [bookingStep, setBookingStep] = useState<BookingStep>('selectGender');
   const [selectedGender, setSelectedGender] = useState<'female' | 'male' | null>(null);
+  
   const [servicesForSelectedArea, setServicesForSelectedArea] = useState<AcuityAppointmentType[]>([]);
   const [selectedAreaTitle, setSelectedAreaTitle] = useState<string>('');
-
+  
   const [isLoading, setIsLoading] = useState(true); 
   const [apiError, setApiError] = useState<string | null>(null); 
 
@@ -52,24 +51,13 @@ export default function AcuityScheduler() {
     }
   }, [apiError, toast]);
 
+  // Carga todos los tipos de cita al montar el componente
   useEffect(() => {
     async function fetchAndSetup() {
       setIsLoading(true);
       try {
         const types = (await getAcuityAppointmentTypes()).filter(type => !type.private);
         setAllAppointmentTypes(types);
-
-        if (serviceIdsParam) {
-            const ids = serviceIdsParam.split(',').map(id => parseInt(id, 10));
-            const servicesFromParams = types.filter(s => ids.includes(s.id));
-            if (servicesFromParams.length > 0) {
-                // Si vienen IDs en la URL, los añade al carrito.
-                // Con la nueva lógica, solo el primero se mantendrá si el usuario selecciona otro.
-                setCart(servicesFromParams);
-            } else {
-                 setApiError("The selected service couldn't be found. Please choose another.");
-            }
-        }
       } catch (error) {
         setApiError("Could not load services. Please try again later.");
       } finally {
@@ -77,40 +65,31 @@ export default function AcuityScheduler() {
       }
     }
     fetchAndSetup();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [serviceIdsParam]);
+  }, []);
   
   const handleGenderSelect = (gender: 'male' | 'female') => {
       setSelectedGender(gender);
       setBookingStep('selectService');
+      // Limpiar selecciones anteriores al cambiar de género
+      setServicesForSelectedArea([]);
+      setSelectedAreaTitle('');
+      setCart([]);
   }
 
   const handleAreaClick = (area: 'face' | 'mid' | 'low', readableCategory: string) => {
-    if (!selectedGender) {
-        toast({ title: "Please select a gender category first.", variant: "default" });
-        return;
-    }
+    if (!selectedGender) return;
     const servicesForArea = categorizeServicesForArea(allAppointmentTypes, selectedGender, area);
     setServicesForSelectedArea(servicesForArea); 
     setSelectedAreaTitle(readableCategory);   
   };
   
   const handleAddToCart = (service: AcuityAppointmentType) => {
-      // El carrito solo puede tener un servicio. Al añadir uno, se reemplaza el anterior.
       toast({ title: "Service Selected!", description: `${service.name} has been selected.`, variant: "default" });
       setCart([service]);
   };
   
   const handleRemoveFromCart = (serviceId: number) => {
       setCart(prevCart => prevCart.filter(item => item.id !== serviceId));
-  };
-  
-  const resetBooking = () => {
-    setCart([]);
-    setBookingStep('selectGender');
-    setSelectedGender(null);
-    setServicesForSelectedArea([]);
-    setSelectedAreaTitle('');
   };
   
   const totalCost = useMemo(() => cart.reduce((total, service) => total + parseFloat(service.price), 0), [cart]);
@@ -150,7 +129,7 @@ export default function AcuityScheduler() {
         <>
             <CardHeader>
                 <CardTitle className="text-2xl font-headline text-primary">2. Choose Your Services</CardTitle>
-                <CardDescription>Click on a body area to select a service. You may only select one to proceed.</CardDescription>
+                <CardDescription>Click on a body area to select a service. You can add more services once you proceed to schedule.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6 md:space-y-0 md:grid md:grid-cols-12 md:gap-8">
                 <div className="md:col-span-5 lg:col-span-4">
@@ -190,7 +169,7 @@ export default function AcuityScheduler() {
                                             <li 
                                                 key={service.id} 
                                                 onClick={() => handleAddToCart(service)} 
-                                                className="p-4 border rounded-lg hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-start transition-colors shadow-sm hover:shadow-md" 
+                                                className={`p-4 border rounded-lg hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-start transition-colors shadow-sm hover:shadow-md ${cart.some(s => s.id === service.id) ? 'ring-2 ring-primary' : ''}`}
                                             >
                                                 {service.image && (
                                                     <div className="relative w-16 h-16 md:w-20 md:h-20 mr-4 flex-shrink-0 rounded overflow-hidden bg-muted">
@@ -216,7 +195,7 @@ export default function AcuityScheduler() {
                                         ))}
                                     </ul>
                                 ) : (
-                                    <p className="text-muted-foreground text-center py-8">No services found for this body part. Please select another area or check back later.</p>
+                                    <p className="text-muted-foreground text-center py-8">No services found for this body part. Please select another area.</p>
                                 )}
                             </>
                         ) : (
@@ -251,23 +230,16 @@ export default function AcuityScheduler() {
                 </div>
             </CardContent>
             <CardFooter className="flex justify-between mt-6"> 
-                 <Button variant="outline" onClick={() => {
-                    setBookingStep('selectGender');
-                    setServicesForSelectedArea([]); 
-                    setSelectedAreaTitle('');       
-                 }}>Back</Button>
+                 <Button variant="outline" onClick={() => setBookingStep('selectGender')}>Back</Button>
                  <Button 
                     onClick={() => {
                       if (cart.length === 1 && cart[0]?.id) {
-                        // Usando 'appointmentType' como el parámetro, basado en la documentación de Acuity.
-                        // El usuario debe confirmar si esto es correcto para su configuración.
                         router.push(`/schedule?appointmentType=${cart[0].id}`);
                       } else {
-                        // Si no hay exactamente un servicio, va al programador general.
                         router.push('/schedule');
                       }
                     }}  
-                    disabled={cart.length !== 1} // Deshabilitado si no hay exactamente un servicio
+                    disabled={cart.length !== 1}
                  >
                     Proceed to Schedule <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
