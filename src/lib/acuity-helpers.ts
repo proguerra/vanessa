@@ -1,5 +1,15 @@
 import type { AcuityAppointmentType } from '@/ai/flows/acuity-booking-flow';
 
+/**
+ * Checks if a service is explicitly for men based on keywords in its name.
+ * @param serviceName - The lowercase name of the service.
+ * @returns True if the service is for men, false otherwise.
+ */
+function isMaleService(serviceName: string): boolean {
+  const maleKeywords = ["men's", "man's", "male", "gentleman"];
+  return maleKeywords.some(kw => serviceName.includes(kw));
+}
+
 export function categorizeServicesForArea(
   allServices: AcuityAppointmentType[],
   gender: 'male' | 'female',
@@ -8,51 +18,30 @@ export function categorizeServicesForArea(
 
   const faceKeywords = ['nose', 'lip', 'chin', 'brow', 'eyebrow', 'face', 'sideburn', 'ear', 'facial'];
   const midKeywords = ['back', 'chest', 'stomach', 'underarm', 'arm'];
-  // Low body keywords are more complex and gender-specific
-  const lowBodyFemaleKeywords = ['leg', 'butt', 'brazilian', 'bikini', "woman's", "women's"];
-  const lowBodyMaleKeywords = ['leg', 'butt', 'brazilian', "men's"];
+  const lowKeywords = ['leg', 'butt', 'brazilian', 'bikini'];
 
-
-  return allServices.filter(service => {
+  // 1. First, filter the services based on the selected gender.
+  const genderFilteredServices = allServices.filter(service => {
     const serviceName = service.name.toLowerCase();
+    if (gender === 'male') {
+      return isMaleService(serviceName);
+    } else { // gender === 'female'
+      return !isMaleService(serviceName);
+    }
+  });
 
-    // First, filter by area
-    let matchesArea = false;
+  // 2. From the gender-filtered list, categorize by body area.
+  return genderFilteredServices.filter(service => {
+    const serviceName = service.name.toLowerCase();
     switch (area) {
       case 'face':
-        matchesArea = faceKeywords.some(kw => serviceName.includes(kw));
-        break;
+        return faceKeywords.some(kw => serviceName.includes(kw));
       case 'mid':
-        matchesArea = midKeywords.some(kw => serviceName.includes(kw));
-        break;
+        return midKeywords.some(kw => serviceName.includes(kw));
       case 'low':
-        if (gender === 'female') {
-            matchesArea = lowBodyFemaleKeywords.some(kw => serviceName.includes(kw));
-        } else { // male
-            matchesArea = lowBodyMaleKeywords.some(kw => serviceName.includes(kw));
-        }
-        break;
-    }
-
-    if (!matchesArea) {
-      return false;
-    }
-
-    // Second, apply gender-specific exclusions
-    if (gender === 'female') {
-      // Exclude services that explicitly say "men's" but are not general low body terms
-      if (serviceName.includes("men's")) {
+        return lowKeywords.some(kw => serviceName.includes(kw));
+      default:
         return false;
-      }
     }
-
-    if (gender === 'male') {
-      // Exclude services that explicitly say "woman's" or are female-specific
-      if (serviceName.includes("woman's") || serviceName.includes("women's") || serviceName.includes('bikini line')) {
-        return false;
-      }
-    }
-
-    return true; // If it passes all checks
   });
 }
