@@ -1,84 +1,134 @@
 "use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Importado useRouter
+import ServiceCard from '@/components/shared/ServiceCard';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import { getAcuityAppointmentTypes, type AcuityAppointmentType } from '@/ai/flows/acuity-booking-flow';
+import { useToast } from '@/hooks/use-toast';
+// Eliminado Button, ShoppingCart, ArrowRight si no se usan en la nueva versión
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/services', label: 'Services' },
-];
+export default function ServicesPage() {
+  const [categorizedServices, setCategorizedServices] = useState<Record<string, AcuityAppointmentType[]>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+  const router = useRouter(); // Inicializado router
 
-export default function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const iconUrl = "https://static.wixstatic.com/media/c5947c_105b98aad40c4d4c8ca7de374634e9fa~mv2.png";
+  useEffect(() => {
+    async function fetchAndCategorizeServices() {
+      try {
+        setIsLoading(true);
+        const fetchedServices = (await getAcuityAppointmentTypes()).filter(s => !s.private);
+
+        const categories: Record<string, string[]> = {
+            'Face': ['nose', 'lip', 'chin', 'brow', 'eyebrow', 'face', 'sideburn', 'ear', 'facial'],
+            'Mid Body': ['back', 'chest', 'stomach', 'underarm', 'arm'],
+            'Lower Body': ['brazilian', 'bikini', 'leg', 'butt'], // Cambiado de "Low Body"
+        };
+
+        const grouped: Record<string, AcuityAppointmentType[]> = {
+            'Face': [],
+            'Mid Body': [],
+            'Lower Body': [], // Cambiado de "Low Body"
+            'Other Services': [],
+        };
+        
+        fetchedServices.forEach(service => {
+            const name = service.name.toLowerCase();
+            let added = false;
+            for (const category in categories) {
+                if (categories[category as keyof typeof categories].some(kw => name.includes(kw))) {
+                    grouped[category].push(service);
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) {
+                grouped['Other Services'].push(service);
+            }
+        });
+
+        Object.keys(grouped).forEach(key => {
+            if (grouped[key].length === 0) {
+                delete grouped[key];
+            }
+        });
+        
+        setCategorizedServices(grouped);
+
+      } catch (error) {
+        console.error("Failed to fetch services:", error);
+        toast({
+          title: "Error",
+          description: "Could not load services. Please try again later.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAndCategorizeServices();
+  }, [toast]);
+  
+  const handleServiceSelect = (service: AcuityAppointmentType) => {
+    // Redirige directamente a la página del iframe con el ID del servicio seleccionado
+    toast({
+        title: "Starting Booking...",
+        description: `You are booking for ${service.name}.`,
+    });
+    router.push(`/schedule?appointmentType=${service.id}`);
+  };
+
+  const hasServices = Object.keys(categorizedServices).length > 0 && Object.values(categorizedServices).some(s => s.length > 0);
 
   return (
-    <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <div className="bg-background py-12 md:py-16"> {/* Eliminado padding inferior extra */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors">
-            <Image src={iconUrl} alt="Sparkle" width={32} height={32} />
-            <span className="text-2xl font-headline font-semibold">Viva La Beauty</span>
-          </Link>
-
-          <nav className="hidden md:flex space-x-6 items-center">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="text-foreground hover:text-primary transition-colors font-medium">
-                {link.label}
-              </Link>
-            ))}
-            <Button asChild>
-              <Link href="/book">Book Now</Link>
-            </Button>
-          </nav>
-
-          <div className="md:hidden">
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Open menu">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[280px] bg-background p-6">
-                <div className="flex flex-col space-y-6">
-                  <div className="flex justify-between items-center">
-                     <Link href="/" className="flex items-center space-x-2 text-primary" onClick={() => setIsMobileMenuOpen(false)}>
-                        <Image src={iconUrl} alt="Sparkle" width={28} height={28} />
-                        <span className="text-xl font-headline font-semibold">Viva La Beauty</span>
-                    </Link>
-                    <SheetClose asChild>
-                         <Button variant="ghost" size="icon" aria-label="Close menu">
-                            <X className="h-6 w-6" />
-                        </Button>
-                    </SheetClose>
-                  </div>
-                  
-                  {navLinks.map((link) => (
-                    <SheetClose key={link.href} asChild>
-                      <Link
-                        href={link.href}
-                        className="text-lg text-foreground hover:text-primary transition-colors py-2 block"
-                      >
-                        {link.label}
-                      </Link>
-                    </SheetClose>
-                  ))}
-                  <SheetClose asChild>
-                    <Button asChild className="w-full">
-                      <Link href="/book">Book Now</Link>
-                    </Button>
-                  </SheetClose>
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-headline font-semibold text-primary mb-4 flex items-center justify-center">
+            <Image src="https://static.wixstatic.com/media/c5947c_105b98aad40c4d4c8ca7de374634e9fa~mv2.png" alt="" width={40} height={40} className="mr-3 h-10 w-10" />
+            Our Beauty & Waxing Services
+            <Image src="https://static.wixstatic.com/media/c5947c_105b98aad40c4d4c8ca7de374634e9fa~mv2.png" alt="" width={40} height={40} className="ml-3 h-10 w-10" />
+          </h1>
+          <p className="text-xl text-foreground max-w-2xl mx-auto font-body">
+            Discover a comprehensive range of treatments designed to make you look and feel your best.
+          </p>
+          <p className="text-lg font-body text-accent font-bold mt-4 p-2 bg-accent/10 rounded-md inline-block">
+            Click on any service to start your booking.
+          </p>
         </div>
+        
+        {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          </div>
+        ) : hasServices ? (
+          <div className="space-y-16">
+            {Object.entries(categorizedServices).map(([category, services]) => (
+                <div key={category}>
+                    <h2 className="text-4xl font-headline text-primary mb-8 text-center">{category}</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {services.map((service) => (
+                            <ServiceCard 
+                                key={service.id} 
+                                service={service}
+                                onSelect={() => handleServiceSelect(service)}
+                                isSelected={false} // isSelected ya no es relevante aquí
+                            />
+                        ))}
+                    </div>
+                </div>
+            ))}
+          </div>
+        ) : (
+           <p className="text-center text-muted-foreground font-body text-lg">
+            Our service list is currently being updated. Please check back soon or contact us for more information!
+          </p>
+        )}
       </div>
-    </header>
+      
+      {/* La barra de resumen del carrito ha sido eliminada */}
+    </div>
   );
 }
