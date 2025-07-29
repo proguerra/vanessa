@@ -79,6 +79,15 @@ export default function AcuityScheduler() {
   const handleAreaClick = (area: 'face' | 'mid' | 'low', readableCategory: string) => {
     if (!selectedGender) return;
     const servicesForArea = categorizeServicesForArea(allAppointmentTypes, selectedGender, area);
+    
+    // --- DEBUG LOG ---
+    console.log("--- DEBUG: Filtering Services ---");
+    console.log("Selected Gender:", selectedGender);
+    console.log("Selected Area:", area);
+    console.log("All Services Available:", allAppointmentTypes);
+    console.log("Filtered Services Result:", servicesForArea);
+    console.log("---------------------------------");
+    
     setServicesForSelectedArea(servicesForArea); 
     setSelectedAreaTitle(readableCategory);   
   };
