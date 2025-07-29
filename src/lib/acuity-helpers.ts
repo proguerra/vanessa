@@ -2,12 +2,14 @@ import type { AcuityAppointmentType } from '@/ai/flows/acuity-booking-flow';
 
 /**
  * Checks if a service is explicitly for men based on keywords in its name.
- * @param serviceName - The lowercase name of the service.
+ * A service is considered for men if its name contains "men's" or "gentleman".
+ * @param serviceName - The name of the service.
  * @returns True if the service is for men, false otherwise.
  */
 function isMaleService(serviceName: string): boolean {
-  const maleKeywords = ["men's", "man's", "male", "gentleman"];
-  return maleKeywords.some(kw => serviceName.includes(kw));
+  const name = serviceName.toLowerCase();
+  const maleKeywords = ["men's", "gentleman"];
+  return maleKeywords.some(kw => name.includes(kw));
 }
 
 export function categorizeServicesForArea(
@@ -20,13 +22,13 @@ export function categorizeServicesForArea(
   const midKeywords = ['back', 'chest', 'stomach', 'underarm', 'arm'];
   const lowKeywords = ['leg', 'butt', 'brazilian', 'bikini'];
 
-  // 1. First, filter the services based on the selected gender.
+  // 1. First, filter the services based on the selected gender using keywords.
   const genderFilteredServices = allServices.filter(service => {
-    const serviceName = service.name.toLowerCase();
     if (gender === 'male') {
-      return isMaleService(serviceName);
+      return isMaleService(service.name);
     } else { // gender === 'female'
-      return !isMaleService(serviceName);
+      // A service is considered for women if it's NOT explicitly for men.
+      return !isMaleService(service.name);
     }
   });
 
