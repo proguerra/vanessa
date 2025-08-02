@@ -26,13 +26,13 @@ export default function FeaturedServicesSection() {
         
         const popularServiceNames = [
           "Woman’s Brazilian (includes butt strip)",
-          "Full Legs",
-          "Eyebrows"
+          "Eyebrows",
+          "Woman's Bikini Line" // Corrected apostrophe
         ];
 
         const featured = popularServiceNames.map(name => {
           return allServices.find(s => s.name.trim().toLowerCase() === name.trim().toLowerCase());
-        }).filter((service): service is AcuityAppointmentType => service !== undefined); // Filter out any services that weren't found
+        }).filter((service): service is AcuityAppointmentType => service !== undefined);
         
         setFeaturedServices(featured);
 
