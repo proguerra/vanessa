@@ -59,7 +59,7 @@ export default function Footer() {
               </a>
 
               <a 
-                href="https://www.tiktok.com/@vivalabeauty_tx" 
+                href="https://www.tiktok.com/@vivalabeautywax0?_t=ZT-8yZhoxjVef7&_r=1" 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
