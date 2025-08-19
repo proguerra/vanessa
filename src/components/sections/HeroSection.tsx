@@ -27,9 +27,8 @@ export default function HeroSection() {
           Experience exceptional waxing and beauty treatments in the heart of Sugar Land, TX. <br/>Feel confident, radiant, and beautifully you.
         </p>
         <div className="space-x-4 animate-fade-in-up delay-400">
-          <Button size="lg" asChild className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+          <Button size="xl" asChild className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
             <Link href="/book">
-              <Image src="https://static.wixstatic.com/media/c5947c_105b98aad40c4d4c8ca7de374634e9fa~mv2.png" alt="" width={20} height={20} className="mr-2 h-5 w-5" />
               Book Appointment
             </Link>
           </Button>
