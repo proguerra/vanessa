@@ -43,7 +43,6 @@ export default function AboutSection() {
             </div>
             <Button size="lg" asChild>
               <Link href="/book">
-                <Image src={iconUrl} alt="" width={20} height={20} className="mr-2 h-5 w-5" />
                 Book Your Services
               </Link>
             </Button>
