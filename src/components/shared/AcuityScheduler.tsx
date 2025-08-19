@@ -155,13 +155,13 @@ export default function AcuityScheduler() {
                             <>
                             <ServiceArea position="top-[8%] left-1/2 -translate-x-1/2" label="Face Services" onClick={() => handleAreaClick('face', 'Female Face Services')} />
                             <ServiceArea position="top-[28%] left-1/2 -translate-x-1/2" label="Mid Body Services" onClick={() => handleAreaClick('mid', 'Female Mid Body Services')} />
-                            <ServiceArea position="top-[50%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('low', 'Female Low Body Services')} />
+                            <ServiceArea position="top-[50%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('low', 'Female Lower Body Services')} />
                             </>
                         ) : (
                              <>
                             <ServiceArea position="top-[7%] left-1/2 -translate-x-1/2" label="Face Services" onClick={() => handleAreaClick('face', 'Male Face Services')} />
                             <ServiceArea position="top-[26%] left-1/2 -translate-x-1/2" label="Mid Body Services" onClick={() => handleAreaClick('mid', 'Male Mid Body Services')} />
-                            <ServiceArea position="top-[48%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('low', 'Male Low Body Services')} />
+                            <ServiceArea position="top-[48%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('low', 'Male Lower Body Services')} />
                             </>
                         )}
                     </div>
