@@ -76,7 +76,7 @@ export default function AcuityScheduler() {
       setCart([]);
   }
 
-  const handleAreaClick = (area: 'face' | 'mid' | 'lower', readableCategory: string) => {
+  const handleAreaClick = (area: 'face' | 'mid' | 'low', readableCategory: string) => {
     if (!selectedGender) return;
     const servicesForArea = categorizeServicesForArea(allAppointmentTypes, selectedGender, area);
     
@@ -155,13 +155,13 @@ export default function AcuityScheduler() {
                             <>
                             <ServiceArea position="top-[8%] left-1/2 -translate-x-1/2" label="Face Services" onClick={() => handleAreaClick('face', 'Female Face Services')} />
                             <ServiceArea position="top-[28%] left-1/2 -translate-x-1/2" label="Mid Body Services" onClick={() => handleAreaClick('mid', 'Female Mid Body Services')} />
-                            <ServiceArea position="top-[50%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('lower', 'Female Lower Body Services')} />
+                            <ServiceArea position="top-[50%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('low', 'Female Low Body Services')} />
                             </>
                         ) : (
                              <>
                             <ServiceArea position="top-[7%] left-1/2 -translate-x-1/2" label="Face Services" onClick={() => handleAreaClick('face', 'Male Face Services')} />
                             <ServiceArea position="top-[26%] left-1/2 -translate-x-1/2" label="Mid Body Services" onClick={() => handleAreaClick('mid', 'Male Mid Body Services')} />
-                            <ServiceArea position="top-[48%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('lower', 'Male Lower Body Services')} />
+                            <ServiceArea position="top-[48%] left-1/2 -translate-x-1/2" label="Lower Body Services" onClick={() => handleAreaClick('low', 'Male Low Body Services')} />
                             </>
                         )}
                     </div>
