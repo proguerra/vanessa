@@ -76,7 +76,7 @@ export default function AcuityScheduler() {
       setCart([]);
   }
 
-  const handleAreaClick = (area: 'face' | 'mid' | 'low', readableCategory: string) => {
+  const handleAreaClick = (area: 'face' | 'mid' | 'lower', readableCategory: string) => {
     if (!selectedGender) return;
     const servicesForArea = categorizeServicesForArea(allAppointmentTypes, selectedGender, area);
     
