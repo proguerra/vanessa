@@ -82,9 +82,9 @@ export default function ServicesPage() {
   const handleServiceSelect = (service: AcuityAppointmentType) => {
     toast({
       title: "Starting Booking...",
-      description: You are booking for ${service.name}.,
+      description: `You are booking for ${service.name}.`,
     });
-    router.push(/schedule?appointmentType=${service.id});
+    router.push(`/schedule?appointmentType=${service.id}`);
   };
 
   const selectGender = (selectedGender: 'women' | 'men') => {
@@ -98,7 +98,8 @@ export default function ServicesPage() {
 
   const hasServices = displayedServices.length > 0;
   const subCategories: SubCategory[] = ['Face', 'Mid Body', 'Lower Body'];
-return (
+
+  return (
     <div className="bg-background py-12 md:py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
