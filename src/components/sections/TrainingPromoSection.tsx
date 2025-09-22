@@ -6,14 +6,24 @@ export default function TrainingPromoSection() {
   return (
     <section className="py-12 bg-card/70">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <Image
+            src="/images/training-hero.jpg"
+            alt="Speed waxing training hero"
+            width={1600}
+            height={900}
+            priority
+            className="w-full h-auto"
+          />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div className="relative w-full h-64 md:h-full min-h-[260px] overflow-hidden rounded-lg shadow-lg">
             <Image
-              src="/images/training/cover.png"
-              alt="Hands-on waxing training session"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
+              src="/images/training-observer.jpg"
+              alt="Student observing the instructor during speed waxing training"
+              width={1200}
+              height={800}
+              className="object-cover w-full h-full"
             />
           </div>
           <div className="space-y-4">
@@ -29,6 +39,15 @@ export default function TrainingPromoSection() {
             <Button asChild size="lg" className="mt-4">
               <Link href="/training">Explore Training</Link>
             </Button>
+            <div className="pt-6">
+              <Image
+                src="/images/training-classroom-wide.jpg"
+                alt="Speed waxing training classroom group"
+                width={1600}
+                height={900}
+                className="w-full h-auto"
+              />
+            </div>
           </div>
         </div>
       </div>
