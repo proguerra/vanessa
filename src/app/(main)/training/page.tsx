@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function TrainingPage() {
   return (
     <div className="bg-background">
+      {/* HERO */}
       <section className="py-16 bg-gradient-to-br from-primary/10 via-background to-secondary/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
           <h1 className="text-4xl md:text-5xl font-headline font-semibold text-primary mb-6">
@@ -19,13 +21,17 @@ export default function TrainingPage() {
             Take your waxing skills to the next level. Vanessa, founder of Viva La Beauty, has spent over a decade perfecting speed waxing and luxury intimate care. Now she shares her expertise with schools, salons, and professionals ready to master the craft.
           </p>
           <Button asChild size="lg">
-            <a href="mailto:training@vivalabeautywax.com" aria-label="Request a class by email">
+            <a
+              href="mailto:vivalabeautywax.2025@gmail.com"
+              aria-label="Request a class by email"
+            >
               Request a Class
             </a>
           </Button>
         </div>
       </section>
 
+      {/* EDUCATOR / ABOUT */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
@@ -34,22 +40,36 @@ export default function TrainingPage() {
                 About Vanessa as an Educator
               </h2>
               <p className="text-lg text-foreground font-body">
-                With more than 10 years of experience and thousands of clients served, Vanessa is a trusted authority in Brazilian and speed waxing. Her teaching blends technical mastery and real-world client care so students leave confident, fast, and client-ready.
+                With more than 10 years of experience and thousands of clients
+                served, Vanessa is a trusted authority in Brazilian and speed
+                waxing. Her teaching blends technical mastery and real-world
+                client care so students leave confident, fast, and client-ready.
               </p>
+              <ul className="mt-4 space-y-2 text-foreground/80 font-body">
+                <li>• Focus: speed, comfort, sanitation & efficient workflow</li>
+                <li>• Formats: 1:1, small groups, and on-site school workshops</li>
+                <li>• Languages: English & Spanish</li>
+              </ul>
             </div>
+
+            {/* Educator Photo */}
             <div className="flex justify-center">
-              <div
-                className="w-full max-w-sm aspect-[4/5] rounded-lg border border-primary/40 bg-primary/10 flex items-center justify-center text-primary font-headline text-xl shadow-lg"
-                role="img"
-                aria-label="Vanessa teaching (placeholder)"
-              >
-                Educator Photo
+              <div className="relative w-full max-w-sm aspect-[4/5] rounded-lg border border-primary/40 bg-primary/5 shadow-lg overflow-hidden">
+                <Image
+                  src="/images/educatorphoto.JPEG"
+                  alt="Vanessa teaching a speed waxing class"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  className="object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* TRAINING OPTIONS */}
       <section className="py-16 bg-secondary/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
           <h2 className="text-3xl font-headline font-semibold text-primary text-center mb-10">
@@ -61,7 +81,9 @@ export default function TrainingPage() {
                 For Beauty Schools &amp; Institutes
               </h3>
               <p className="text-foreground font-body text-lg">
-                Invite Vanessa as a guest educator to teach Brazilian, speed waxing, and men’s services. Her curriculum plugs into your program with practical, high-demand skills.
+                Invite Vanessa as a guest educator to teach Brazilian, speed
+                waxing, and men’s services. Her curriculum plugs into your program
+                with practical, high-demand skills.
               </p>
             </article>
             <article className="bg-card shadow-lg rounded-lg p-8 border border-primary/20">
@@ -69,13 +91,16 @@ export default function TrainingPage() {
                 For Individuals &amp; Professionals
               </h3>
               <p className="text-foreground font-body text-lg">
-                1-on-1 or small group training to build speed, technique, and client communication. Ideal for estheticians adding waxing or leveling up.
+                1-on-1 or small group training to build speed, technique, and
+                client communication. Ideal for estheticians adding waxing or
+                leveling up.
               </p>
             </article>
           </div>
         </div>
       </section>
 
+      {/* CURRICULUM */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <h2 className="text-3xl font-headline font-semibold text-primary text-center mb-8">
@@ -91,13 +116,18 @@ export default function TrainingPage() {
         </div>
       </section>
 
+      {/* CTA */}
       <section className="py-16 bg-gradient-to-r from-primary/10 via-secondary/20 to-primary/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
           <p className="text-xl text-foreground font-body mb-8">
-            Whether you’re a school director or an esthetician ready to level up, Vanessa’s training is the fast track to waxing mastery.
+            Whether you’re a school director or an esthetician ready to level up,
+            Vanessa’s training is the fast track to waxing mastery.
           </p>
           <Button asChild size="lg">
-            <a href="mailto:training@vivalabeautywax.com" aria-label="Book a training by email">
+            <a
+              href="mailto:vivalabeautywax.2025@gmail.com"
+              aria-label="Book a training by email"
+            >
               Book a Training
             </a>
           </Button>
