@@ -9,7 +9,7 @@ export default function TrainingPromoSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div className="relative w-full h-64 md:h-full min-h-[260px] overflow-hidden rounded-lg shadow-lg">
             <Image
-              src="https://placehold.co/600x400/f9e4ee/1f0b1d?text=Training+Day"
+              src="/images/training/cover.png"
               alt="Hands-on waxing training session"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
