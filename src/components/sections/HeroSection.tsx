@@ -23,6 +23,17 @@ export default function HeroSection() {
         <h1 className="text-5xl md:text-7xl font-headline font-bold text-primary mb-6 animate-fade-in-down">
           Viva La Beauty
         </h1>
+        <div className="flex justify-center md:justify-start mb-8 animate-fade-in-up">
+          <Link href="https://houstonsbest.com/winners/" aria-label="Visit Houston's Best Winners">
+            <Image
+              src="/images/houstonsbest.png"
+              alt="Houston's Best Winner"
+              width={180}
+              height={180}
+              className="h-auto w-36 md:w-44"
+            />
+          </Link>
+        </div>
         <p className="text-xl md:text-2xl text-foreground max-w-2xl mx-auto mb-10 font-body animate-fade-in-up delay-200">
           Experience exceptional waxing and beauty treatments in the heart of Sugar Land, TX. <br/>Feel confident, radiant, and beautifully you.
         </p>
