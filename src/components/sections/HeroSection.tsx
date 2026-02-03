@@ -40,6 +40,16 @@ export default function HeroSection() {
           </Button>
         </div>
       </div>
+      <div className="absolute bottom-4 left-4 z-20">
+        <Image
+          src="https://static.wixstatic.com/media/285fa5_0b0d21708449487b8104e8d671332e56~mv2.png/v1/fill/w_610,h_304,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/houstonsbest.png"
+          alt="Houston's Best logo"
+          width={180}
+          height={90}
+          className="h-auto w-[140px] sm:w-[160px] md:w-[180px]"
+          priority
+        />
+      </div>
       <style jsx>{`
         @keyframes fade-in-down {
           0% {
